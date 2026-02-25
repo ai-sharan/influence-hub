@@ -26,6 +26,10 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  isDeleted: {
+  type: Boolean,
+  default: false
+},
   verificationToken: {
     type: String
   },
@@ -33,5 +37,17 @@ const userSchema = new mongoose.Schema({
     type: Date
   }
 }, { timestamps: true })
+
+userSchema.pre('find', function() {
+  this.where({ isDeleted: false })
+})
+
+userSchema.pre('findOne', function() {
+  this.where({ isDeleted: false })
+})
+
+userSchema.pre('findOneAndUpdate', function() {
+  this.where({ isDeleted: false })
+})
 
 module.exports = mongoose.model('User', userSchema)

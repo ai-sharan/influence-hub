@@ -35,4 +35,6 @@ const influencerProfileSchema = new mongoose.Schema({
   isAvailable: { type: Boolean, default: true }
 }, { timestamps: true })
 
+influencerProfileSchema.index({ city: 1, niche: 1, isAvailable: 1 })
+
 module.exports = mongoose.model('InfluencerProfile', influencerProfileSchema)
