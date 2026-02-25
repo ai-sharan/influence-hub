@@ -15,6 +15,12 @@ connectDB();
 const authRoutes = require('./routes/authRoutes')
 app.use('/api/auth', authRoutes)
 
+const influencerRoutes = require('./routes/influencerRoutes')
+app.use('/api/influencer', influencerRoutes)
+
+const businessRoutes = require('./routes/businessRoutes')
+app.use('/api/business', businessRoutes)
+
 const { protect } = require('./middleware/authMiddleware')
 
 app.get('/api/test-protected', protect, (req, res) => {
