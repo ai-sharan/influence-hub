@@ -1,5 +1,12 @@
 const mongoose = require('mongoose')
 
+const activeUserFilter = {
+  $or: [
+    { isDeleted: false },
+    { isDeleted: { $exists: false } }
+  ]
+}
+
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -27,9 +34,9 @@ const userSchema = new mongoose.Schema({
     default: false
   },
   isDeleted: {
-  type: Boolean,
-  default: false
-},
+    type: Boolean,
+    default: false
+  },
   verificationToken: {
     type: String
   },
@@ -39,15 +46,15 @@ const userSchema = new mongoose.Schema({
 }, { timestamps: true })
 
 userSchema.pre('find', function() {
-  this.where({ isDeleted: false })
+  this.where(activeUserFilter)
 })
 
 userSchema.pre('findOne', function() {
-  this.where({ isDeleted: false })
+  this.where(activeUserFilter)
 })
 
 userSchema.pre('findOneAndUpdate', function() {
-  this.where({ isDeleted: false })
+  this.where(activeUserFilter)
 })
 
 module.exports = mongoose.model('User', userSchema)

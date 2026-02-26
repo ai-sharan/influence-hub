@@ -2,6 +2,7 @@ const User = require('../models/User')
 const bcrypt = require('bcryptjs')
 const crypto = require('crypto')
 const nodemailer = require('nodemailer')
+const jwt = require('jsonwebtoken')
 
 // Email transporter setup
 const transporter = nodemailer.createTransport({
@@ -12,10 +13,33 @@ const transporter = nodemailer.createTransport({
   }
 })
 
+const isNonEmptyString = (value) => typeof value === 'string' && value.trim().length > 0
+
+const requireJsonBody = (req, res) => {
+  if (!req.body || typeof req.body !== 'object') {
+    res.status(400).json({ message: 'Request body must be valid JSON' })
+    return false
+  }
+  return true
+}
+
 // REGISTER
 const register = async (req, res) => {
   try {
+    if (!requireJsonBody(req, res)) {
+      return
+    }
+
     const { name, email, password, role } = req.body
+    const allowedRoles = ['influencer', 'business']
+
+    if (!isNonEmptyString(name) || !isNonEmptyString(email) || !isNonEmptyString(password) || !isNonEmptyString(role)) {
+      return res.status(400).json({ message: 'Name, email, password, and role are required' })
+    }
+
+    if (!allowedRoles.includes(role)) {
+      return res.status(400).json({ message: 'Invalid role. Allowed roles: influencer, business' })
+    }
 
     // Check if user already exists
     const existingUser = await User.findOne({ email })
@@ -94,12 +118,18 @@ const verifyEmail = async (req, res) => {
   }
 }
 
-const jwt = require('jsonwebtoken')
-
 // LOGIN
 const login = async (req, res) => {
   try {
+    if (!requireJsonBody(req, res)) {
+      return
+    }
+
     const { email, password } = req.body
+
+    if (!isNonEmptyString(email) || !isNonEmptyString(password)) {
+      return res.status(400).json({ message: 'Email and password are required' })
+    }
 
     // Check if user exists
     const user = await User.findOne({ email })
