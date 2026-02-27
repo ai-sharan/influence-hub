@@ -1,3 +1,62 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+@layer base {
+  :root {
+    --background: 253 250 247;
+    --foreground: 44 24 16;
+
+    --card: 255 255 255;
+    --card-foreground: 44 24 16;
+
+    --border: 232 221 212;
+    --input: 232 221 212;
+
+    --primary: 196 98 45;
+    --primary-foreground: 255 255 255;
+
+    --secondary: 247 243 238;
+    --secondary-foreground: 107 68 35;
+
+    --muted: 247 243 238;
+    --muted-foreground: 156 107 69;
+
+    --accent: 253 238 230;
+    --accent-foreground: 196 98 45;
+
+    --destructive: 220 38 38;
+    --destructive-foreground: 255 255 255;
+
+    --ring: 196 98 45;
+    --radius: 0.75rem;
+
+    /* Custom tokens */
+    --brown-dark: #2C1810;
+    --brown-mid: #6B4423;
+    --brown-light: #9C6B45;
+    --terracotta: #C4622D;
+    --terracotta-light: #F0956A;
+    --terracotta-pale: #FDEEE6;
+    --sage: #5C8A6B;
+    --sage-light: #EAF3ED;
+    --cream: #FDFAF7;
+    --surface: #F7F3EE;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'DM Sans', sans-serif;
+    background-color: var(--cream);
+  }
+  h1, h2, h3 {
+    font-family: 'Playfair Display', serif;
+  }
+}
